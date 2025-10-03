@@ -118,6 +118,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  TIM2->CCR1 = 25;
+	  TIM2->CCR2 = 25;
+	  TIM2->CCR3 = 25;
+
+	  HAL_Delay(2000);
+
+	  TIM2->CCR1 = 50;
+	  TIM2->CCR2 = 50;
+	  TIM2->CCR3 = 50;
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
