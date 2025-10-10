@@ -65,14 +65,6 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-typedef enum Phase{
-	Phase1,
-	Phase2,
-	Phase3,
-	Phase4,
-	Phase5,
-	Phase6
-};
 /* USER CODE END 0 */
 
 /**
@@ -83,7 +75,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -109,25 +100,12 @@ int main(void)
   MX_USB_PCD_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  TIM2->CCR1 = 25;
-	  TIM2->CCR2 = 25;
-	  TIM2->CCR3 = 25;
-
-	  HAL_Delay(2000);
-
-	  TIM2->CCR1 = 50;
-	  TIM2->CCR2 = 50;
-	  TIM2->CCR3 = 50;
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -323,7 +301,7 @@ static void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
-  sConfigOC.Pulse = 25;
+  sConfigOC.Pulse = 0;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_2) != HAL_OK)
   {
     Error_Handler();
@@ -394,6 +372,9 @@ static void MX_GPIO_Init(void)
                           |LD7_Pin|LD9_Pin|LD10_Pin|LD8_Pin
                           |LD6_Pin, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, Q3L_Pin|Q2L_Pin|Q1L_Pin, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : DRDY_Pin MEMS_INT3_Pin MEMS_INT4_Pin MEMS_INT1_Pin
                            MEMS_INT2_Pin */
   GPIO_InitStruct.Pin = DRDY_Pin|MEMS_INT3_Pin|MEMS_INT4_Pin|MEMS_INT1_Pin
@@ -419,11 +400,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Hall2_Pin Hall3_Pin Hall1_Pin */
-  GPIO_InitStruct.Pin = Hall2_Pin|Hall3_Pin|Hall1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  /*Configure GPIO pins : Hall3_Pin Hall2_Pin Hall1_Pin */
+  GPIO_InitStruct.Pin = Hall3_Pin|Hall2_Pin|Hall1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Q3L_Pin Q2L_Pin Q1L_Pin */
+  GPIO_InitStruct.Pin = Q3L_Pin|Q2L_Pin|Q1L_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -431,26 +423,82 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-/*
-void MotorHandler(int dir, Phase){
-	switch(Phase){
-		case Phase1:
+uint32_t val_capteurs[3];
+uint32_t alpha = 50;
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	val_capteurs[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15); // Capteur Hall1
+	val_capteurs[1] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14); // Capteur Hall2
+	val_capteurs[2] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13); // Capteur Hall3
+	TIM2->CCR1 = alpha;
+	TIM2->CCR2 = alpha;
+	TIM2->CCR3 = alpha;
+
+	int code = val_capteurs[2]*100 + val_capteurs[1]*10 + val_capteurs[0];
+
+	switch (code){
+		case 101:
+			//Activation du timer 2 CH1 et désactivation des autres channels
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+			//Activer Q2L et désactiver les autres transistors
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+		case 001:
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+			//Activer Q3L et désactiver les autres
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
+		case 011:
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-		case Phase2:
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+			// Activer Q3L et désactiver les autres
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
+		case 010:
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
+			// Activer Q1L et désactiver les autres
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+		case 110:
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+			// Activer Q1L et désactiver les autres
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+		case 100:
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+			// Activer Q2L et désactiver les autres
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 1);
+		default:
+			// On désactive tout
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+
 
 	}
 
-} */
-
-/* void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim2)
-{
- HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-}*/
-
-
+}
 /* USER CODE END 4 */
 
 /**
