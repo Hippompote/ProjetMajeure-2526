@@ -11,6 +11,5 @@ Contient:
 
 **TODO**
 
-* Prise en charge du sens de direction et de la vitesse
 * Etablissement de la liaison SPI
-
+* Etablir les macros pour libérer le code du dur
