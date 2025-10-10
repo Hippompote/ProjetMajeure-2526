@@ -9,3 +9,8 @@ Contient:
 * Readme.md
 * Code main.c 
 
+**TODO**
+
+* Prise en charge du sens de direction et de la vitesse
+* Etablissement de la liaison SPI
+

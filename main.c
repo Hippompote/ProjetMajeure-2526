@@ -427,17 +427,14 @@ uint32_t val_capteurs[3];
 uint32_t alpha = 50;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	val_capteurs[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15); // Capteur Hall1
-	val_capteurs[1] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14); // Capteur Hall2
-	val_capteurs[2] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13); // Capteur Hall3
 	TIM2->CCR1 = alpha;
 	TIM2->CCR2 = alpha;
 	TIM2->CCR3 = alpha;
 
-	int code = val_capteurs[2]*100 + val_capteurs[1]*10 + val_capteurs[0];
+	uint8_t code = (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) << 2) | (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) << 1) | HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15);
 
 	switch (code){
-		case 101:
+		case 0b101:
 			//Activation du timer 2 CH1 et désactivation des autres channels
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -446,7 +443,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
-		case 001:
+		case 0b001:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
@@ -454,7 +451,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
-		case 011:
+		case 0b011:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
@@ -462,7 +459,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
-		case 010:
+		case 0b010:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
@@ -470,15 +467,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
-		case 110:
+		case 0b110:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
-			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
+			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3); //Q3H, PA3
 			// Activer Q1L et désactiver les autres
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
-			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
-		case 100:
+			HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1); //Q1L
+		case 0b100:
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 			HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 			HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3);
