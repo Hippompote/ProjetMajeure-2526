@@ -1,0 +1,32 @@
+#;Qty;Reference;Type Composant;Value;Description;Info sup;Type Boitier;Footprint;Distributeur;Ref Distrib;Fabricant;Ref Fabricant;Prix
+1;4;C1,C12,C14,C15;Condensateur;100n;Unpolarized capacitor;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+2;1;C2;Condensateur;4.7u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+3;3;C3,C9,C11;Condensateur;2.2u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+4;3;C4,C5,C13;Condensateur;10u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;farnell;2458327;TDK;CGA5L1X7R1E106K160AC;0,163 €
+5;1;C6;Condensateur;3.3u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+6;1;C7;Condensateur;180p;Unpolarized capacitor;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+7;2;C8,C10;Condensateur;1u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+8;1;C16;Condensateur;33p;Unpolarized capacitor;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;
+9;2;J1,J4;Bornier;Screw_Terminal_01x02;;;;00_CPE_Modules_Projet_5ESE:TerminalBlock_Phoenix_MKDS-1,5-2-3.81_1x02_P3.81mm_Horizontal;CPE;;;;
+10;1;J2;Bornier;Connecteur HE10;;;;00_CPE_Modules_Projet_5ESE:he10-10d_LowProfile;CPE;;;;
+11;2;J3,J5;Bornier;Molex Picoblade 53398;;;;00_CPE_Modules_Projet_5ESE:Molex_PicoBlade_53398-0671_1x06-1MP_P1.25mm_Vertical;CPE;;;;
+12;1;LS1;Buzzer;PS1420P02CT;;;;buzzer:PS1420P02CT_TDK;farnell;1669967;TDK;PS1420P02CT;1,230 €
+13;1;MK1;Microphone;WM-62a;;;;CMA-4544PF-W:MIC_CMA-4544PF-W;CPE;;;;
+14;1;Q1;Transistor;MMBT4403;PNP SOT-23 transistor, 40V, 600mA, 350mW, Alternate KiCAD Library;;;Package_TO_SOT_SMD_AKL:SOT-23;farnell;4574507;DIOTEC;MMBT4403;0,117 €
+15;2;R1,R22;Résistance;1k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+16;2;R2,R23;Résistance;2.2k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+17;1;R3;Résistance;16.2k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+18;8;R4,R5,R7,R8,R10,R11,R12,R13;Résistance;10k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+19;1;R6;Résistance;82.5k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+20;2;R9,R14;Résistance;51.1k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+21;3;R15,R16,R20;Résistance;100;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+22;1;R17;Résistance;10;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+23;1;R18;Résistance;20k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+24;1;R19;Résistance;8k2;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+25;1;R21;Résistance;162;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;
+26;6;TP1,TP2,TP3,TP4,TP5,TP6;TestPoint;TestPoint;;;;00_CPE_Modules_Projet_5ESE:SolderWirePad_GND_Connection_1-35mmDrill,00_CPE_Modules_Projet_5ESE:SolderWirePad_Test-Point_1mmDrill;CPE;;;;
+27;1;U1;M0;STM32L010R8T6;ARM Cortex-M0+ MCU, 32KB flash, 8KB RAM, 32MHz, 1.65-3.6V, 51 GPIO, LQFP-64;;;Package_QFP:LQFP-64_10x10mm_P0.5mm;CPE;;;;
+28;3;U2,U3,U4;AOP;TS971IL;SOT-23-5 RRIO Low Noise Operational Amplifier, 5mV Offset, 5Î¼V/Â°C Drift, 12MHz GBW, Alternate KiCAD Library;;;footprints:SOT23-5L_STM;farnell;9755730;STMICROELECTRONICS;TS971ILT;1,120 €
+29;1;U5;Capteur de poids;HX711;24-bit Analog-to-Digital Converter (ADC) for Weight Scales, SOIC-16 (SOP-16);;;Package_SO:SOIC-16_3.9x9.9mm_P1.27mm;;;;;
+30;1;U6;Régulateur;LM317L_SOT-89;100mA 35V Adjustable Linear Regulator, SOT-89;;;Package_TO_SOT_SMD:SOT-89-3;farnell;3122692;TEXAS INSTRUMENTS;LM317LIPK;0,977 €
+31;1;U7;Capteur de température;DHT11;3.3V to 5.5V, temperature and humidity module, DHT11;;;Sensor:Aosong_DHT11_5.5x12.0_P2.54mm;CPE;;;;
