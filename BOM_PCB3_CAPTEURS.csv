@@ -1,33 +1,34 @@
 #;Qty;Reference;Type Composant;Value;Description;Info sup;Type Boitier;Footprint;Distributeur;Ref Distrib;Fabricant;Ref Fabricant;Prix
-1;6;C1,C12,C14,C15,Cd17,Cd18;;100n;Unpolarized capacitor;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
-2;1;C2;;4.7u;Polarized capacitor, small symbol;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
-3;3;C3,C9,C11;;2.2u;Polarized capacitor, small symbol;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
-4;3;C4,C5,C13;;10u;Polarized capacitor, small symbol;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;farnell;2346927;TDK;C2012X5R1E106K125AB;0,278 €
-5;1;C6;;3.3u;Polarized capacitor, small symbol;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
-6;1;C7;;180p;Unpolarized capacitor;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
-7;2;C8,C10;;1u;Polarized capacitor, small symbol;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
-8;1;C16;;33p;Unpolarized capacitor;;CMS 0805;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+1;6;C1,C12,C14,C15,Cd17,Cd18;;100n;Unpolarized capacitor;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+2;1;C2;;4.7u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+3;3;C3,C9,C11;;2.2u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+4;3;C4,C5,C13;;10u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;farnell;2346927;TDK;C2012X5R1E106K125AB;0,278
+5;1;C6;;3.3u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+6;1;C7;;180p;Unpolarized capacitor;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+7;3;C8,C10,C17;;1u;Polarized capacitor, small symbol;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
+8;1;C16;;33p;Unpolarized capacitor;;;Capacitor_SMD:C_0805_2012Metric_Pad1.18x1.45mm_HandSolder;CPE;;;;0
 9;2;J1,J4;;Screw_Terminal_01x02;;;;lib_proj_majeure:TerminalBlock_Phoenix_MKDS-1,5-2-3.81_1x02_P3.81mm_Horizontal;CPE;;;;0
 10;1;J2;;Connecteur HE10;;;;lib_proj_majeure:he10-10d_LowProfile;CPE;;;;0
 11;2;J3,J5;;Molex Picoblade 53398;;;;lib_proj_majeure:Molex_PicoBlade_53398-0671_1x06-1MP_P1.25mm_Vertical;CPE;;;;0
-12;1;LS1;;PS1420P02CT;;;;buzzer:PS1420P02CT_TDK;farnell;1669967;TDK;PS1420P02CT;1,230 €
-13;1;MK1;;WM-62a;;;;micro:MIC_CMA-4544PF-W;CPE;;;;0
-14;1;Q1;;MMBT4403;PNP SOT-23 transistor, 40V, 600mA, 350mW, Alternate KiCAD Library;;;transistor:SOT-23_ONS;farnell;4574507;DIOTEC;MMBT4403;0,117 €
-15;2;R1,R22;;1k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-16;2;R2,R23;;2.2k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-17;1;R3;;16.2k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-18;8;R4,R5,R7,R8,R10,R11,R12,R13;;10k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-19;1;R6;;82.5k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-20;2;R9,R14;;51.1k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-21;3;R15,R16,R20;;100;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-22;1;R17;;10;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-23;1;R18;;20k;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-24;1;R19;;8k2;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-25;1;R21;;162;Resistor, small symbol;;CMS 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
-26;2;R24,R25;;0;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+12;1;LS1;;PS1420P02CT;;;;buzzer:PS1420P02CT_TDK;farnell;1669967;TDK;PS1420P02CT;1,23
+13;1;MK1;;WM-62a;;;;microv2:WM62A_fixed;CPE;;;;0
+14;1;Q1;;MMBT4403;PNP SOT-23 transistor, 40V, 600mA, 350mW, Alternate KiCAD Library;;;transistor:SOT-23_ONS;farnell;4574507;DIOTEC;MMBT4403;0,117
+15;2;R1,R22;;1k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+16;2;R2,R23;;2.2k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+17;1;R3;;16.2k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+18;8;R4,R5,R7,R8,R10,R11,R12,R13;;10k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+19;1;R6;;82.5k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+20;2;R9,R14;;51.1k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+21;3;R15,R16,R20;;100;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+22;1;R17;;10;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+23;1;R18;;20k;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+24;1;R19;;8k2;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+25;1;R21;;162;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
+26;3;R24,R25,R26;;0;Resistor, small symbol;;;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;;;;0
 27;11;TP1,TP2,TP3,TP4,TP5,TP6,TP7,TP8,TP9,TP10,TP11;;TestPoint;;;;lib_proj_majeure:Test_Point_x1;CPE;;;;0
 28;1;U1;;STM32L010R8T6;ARM Cortex-M0+ MCU, 32KB flash, 8KB RAM, 32MHz, 1.65-3.6V, 51 GPIO, LQFP-64;;;lib_proj_majeure:LQFP-64_10x10mm_P0.5mm;CPE;;;;0
-29;3;U2,U3,U4;;TS971IL;SOT-23-5 RRIO Low Noise Operational Amplifier, 5mV Offset, 5Î¼V/Â°C Drift, 12MHz GBW, Alternate KiCAD Library;;;footprints:SOT23-5L_STM;farnell;9755730;STMICROELECTRONICS;TS971ILT;1,120 €
-30;1;U5;;HX711;24-bit Analog-to-Digital Converter (ADC) for Weight Scales, SOIC-16 (SOP-16);;;Package_SO:SOIC-16_3.9x9.9mm_P1.27mm;;;;;X
-31;1;U6;;LM317L_SOT-89;100mA 35V Adjustable Linear Regulator, SOT-89;;;Package_TO_SOT_SMD:SOT-89-3;farnell;3122692;TEXAS INSTRUMENTS;LM317LIPK;0,977 €
-32;1;U7;;DHT11;3.3V to 5.5V, temperature and humidity module, DHT11;;;Sensor:Aosong_DHT11_5.5x12.0_P2.54mm;CPE;;;;
+29;3;U2,U3,U4;;TS971IL;SOT-23-5 RRIO Low Noise Operational Amplifier, 5mV Offset, 5Î¼V/Â°C Drift, 12MHz GBW, Alternate KiCAD Library;;;footprints:SOT23-5L_STM;farnell;9755730;STMICROELECTRONICS;TS971ILT;1,12
+30;1;U5;;HX711;24-bit Analog-to-Digital Converter (ADC) for Weight Scales, SOIC-16 (SOP-16);;;Package_SO:SOIC-16_3.9x9.9mm_P1.27mm;lcsc;C43656;Avia Semicon (Xiamen);HX711;0,58
+31;1;U6;;LM317L_SOT-89;100mA 35V Adjustable Linear Regulator, SOT-89;;;Package_TO_SOT_SMD:SOT-89-3;farnell;3122692;TEXAS INSTRUMENTS;LM317LIPK;0,977
+32;1;U7;;DHT11;3.3V to 5.5V, temperature and humidity module, DHT11;;;Sensor:Aosong_DHT11_5.5x12.0_P2.54mm;CPE;;;;0
+;;;;;;;;;;;;Total : ;4,302
