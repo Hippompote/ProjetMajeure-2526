@@ -1,0 +1,22 @@
+#;Qty;Reference;Type Composant;Value;Description;Info Sup;Type Boitier;Footprint;Distributeur;Datasheet;Ref Distrib;Fabricant;Ref Fabricant;Prix
+1;3;Cin1,Cin2,Cout1;Condensateur;150U;Polarized capacitor;Tolerence 20%, tension 50V;Traversant;Capacitor_THT:CP_Radial_D8.0mm_P3.50mm;Farnell;https://4donline.ihs.com/images/VipMasterIC/IC/VISH/VISH-S-A0020332142/VISH-S-A0020332110-1.pdf?hkey=6D3A4C79FDBF58556ACFDE234799DDF0,~;2766959;Panasonic;EEUFS1H151L;0,65
+2;1;Cout2;Condensateur;1m;Polarized capacitor;Tolerence 20%, tension 50V;Traversant;Capacitor_THT:CP_Radial_D12.5mm_P5.00mm;Farnell;~;2766965;Panasonic;EEUFS1H102L;1,96
+3;2;D1,D2;Diode;STPS5L60S;Schottky diode 60V 5A;;DO‐214AB (SMC);Diode_SMD:D_SMB-SMC_Universal_Handsoldering;Farnell;;2341609;STMicroelectronics;STPS5L60S;0,66
+4;1;D3;Diode;BZD27Cxx;800mW Zener Diode, 3.6-200V, SMF;Tension 5.6V;SMF;Diode_SMD:D_SMF;Farnell;https://www.vishay.com/docs/85153/bzd27series.pdf;1612383;Vishay;BZD27C5V6P-E3-08;1,26
+5;1;J1;Bornier;Screw_Terminal_01x03;Bornier 3 inputs;;Traversant;Modules_Projet_5ESE:TerminalBlock_bornier-3_P5.08mm_15X11_Stelvio_MRT5_12AWG;CPE;~;;;;0
+6;1;J2;Bornier;Bornier X6;Bornier 6 inputs;;Traversant;Modules_Projet_5ESE:TerminalBlock_bornier-6_P5.08mm_15X11_Stelvio_MRT5_12AWG;CPE;~;;;;0
+7;1;L1;Bobine;100U;Inductor;Tolerance 10%, 5A;Traversant;Inductor_THT:L_Radial_D24.4mm_P23.70mm_Murata_1400series;Farnell;~;1077015;muRata;1410454C;2,38
+8;1;L2;Bobine;330U;Inductor;Tolerance 10%, 3.3A;Traversant;Modules_Projet_5ESE:L_Radial_D24.4mm_P23.50mm_Murata_1400series;RadioSpares;~;715-6781;muRata;1433433C;2,64
+9;1;Q1;Transistor PMOS;IRF9540N;-4A Id, -100V Vds, 1.2Ohm Rds, P-Channel HEXFET Power MOSFET, TO-220;;Traversant;Package_TO_SOT_THT:TO-220-3_Vertical;Farnell;;9103546;Vishay;IRF9510PBF;0,64
+10;6;R0,R5,R6,R7,R9,R10;Résistance;0;Resistor;;SMD 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;~;;;;0
+11;2;R1,R4;Résistance;1K78;Resistor;;SMD 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;~;;;;0
+12;1;R2;Résistance;16K2;Resistor;;SMD 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;~;;;;0
+13;1;R3;Résistance;5K62;Resistor;;SMD 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;~;;;;0
+14;1;R8;Résistance;21.5k;Resistor;;SMD 0805;Resistor_SMD:R_0805_2012Metric_Pad1.20x1.40mm_HandSolder;CPE;~;;;;0
+15;1;TP1;Testpoint;TestPoint;test point;;Traversant;Modules_Projet_5ESE:SolderWirePad_GND_Connection_1-35mmDrill;CPE;~;;;;0
+16;1;TP2;Testpoint;TP+12V;test point;;Traversant;Modules_Projet_5ESE:SolderWirePad_Test-Point_1mmDrill;CPE;~;;;;0
+17;1;TP3;Testpoint;TP+5V;test point;;Traversant;Modules_Projet_5ESE:SolderWirePad_Test-Point_1mmDrill;CPE;~;;;;0
+18;1;TP4;Testpoint;TestPoint 36V;test point;;Traversant;Modules_Projet_5ESE:SolderWirePad_Test-Point_1mmDrill;CPE;~;;;;0
+19;1;TP5;Testpoint;TP Output DCDC5;test point;;Traversant;Modules_Projet_5ESE:SolderWirePad_Test-Point_1mmDrill;CPE;~;;;;0
+20;1;TP6;Testpoint;TP Output DCDC12;test point;;Traversant;Modules_Projet_5ESE:SolderWirePad_Test-Point_1mmDrill;CPE;~;;;;0
+21;2;U1,U2;IC;LM2576HVS-ADJ;Adjustable Output Voltage, 3A SIMPLE SWITCHER® Step-Down Voltage Regulator, High Voltage Input, TO-263;;TO‐263‐5;Package_TO_SOT_SMD:TO-263-5_TabPin3;Farnell;http://www.ti.com/lit/ds/symlink/lm2576.pdf;1460664;OnSemi;LM2576D2T-ADJG;1,81
