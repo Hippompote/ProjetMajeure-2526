@@ -83,7 +83,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  __disable_irq();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -100,12 +100,61 @@ int main(void)
   MX_USB_PCD_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  __enable_irq();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD4_GPIO_Port, LD4_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD5_GPIO_Port, LD5_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD6_GPIO_Port, LD6_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD7_GPIO_Port, LD7_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD8_GPIO_Port, LD8_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD9_GPIO_Port, LD9_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(LD10_GPIO_Port, LD10_Pin, GPIO_PIN_RESET);
+	  HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+	  HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
+	  HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
+	  HAL_Delay(50);
+
+	  HAL_GPIO_WritePin(Hall1Comm_GPIO_Port, Hall1Comm_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(Hall2Comm_GPIO_Port, Hall2Comm_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(Hall3Comm_GPIO_Port, Hall3Comm_Pin, GPIO_PIN_SET);
+	  HAL_Delay(50);
+	  // Phase 1
+	  HAL_GPIO_WritePin(Hall1Comm_GPIO_Port, Hall1Comm_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(Hall2Comm_GPIO_Port, Hall2Comm_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(Hall3Comm_GPIO_Port, Hall3Comm_Pin, GPIO_PIN_SET);
+	  HAL_Delay(50);
+	  //Phase 2
+	  HAL_GPIO_WritePin(Hall1Comm_GPIO_Port, Hall1Comm_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(Hall2Comm_GPIO_Port, Hall2Comm_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(Hall3Comm_GPIO_Port, Hall3Comm_Pin, GPIO_PIN_RESET);
+	  HAL_Delay(50);
+	  // Phase 3
+	  HAL_GPIO_WritePin(Hall1Comm_GPIO_Port, Hall1Comm_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(Hall2Comm_GPIO_Port, Hall2Comm_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(Hall3Comm_GPIO_Port, Hall3Comm_Pin, GPIO_PIN_RESET);
+	  HAL_Delay(50);
+	  //Phase 4
+	  HAL_GPIO_WritePin(Hall1Comm_GPIO_Port, Hall1Comm_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(Hall2Comm_GPIO_Port, Hall2Comm_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(Hall3Comm_GPIO_Port, Hall3Comm_Pin, GPIO_PIN_RESET);
+	  HAL_Delay(50);
+	  // Phase 5
+	  HAL_GPIO_WritePin(Hall1Comm_GPIO_Port, Hall1Comm_Pin, GPIO_PIN_SET);
+	  HAL_GPIO_WritePin(Hall2Comm_GPIO_Port, Hall2Comm_Pin, GPIO_PIN_RESET);
+	  HAL_GPIO_WritePin(Hall3Comm_GPIO_Port, Hall3Comm_Pin, GPIO_PIN_SET);
+	  HAL_Delay(50);
+	  //Phase 6
+
+
+
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -373,6 +422,9 @@ static void MX_GPIO_Init(void)
                           |LD6_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, Hall1Comm_Pin|Hall2Comm_Pin|Hall3Comm_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, Q3L_Pin|Q2L_Pin|Q1L_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : DRDY_Pin MEMS_INT3_Pin MEMS_INT4_Pin MEMS_INT1_Pin
@@ -406,6 +458,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : Hall1Comm_Pin Hall2Comm_Pin Hall3Comm_Pin */
+  GPIO_InitStruct.Pin = Hall1Comm_Pin|Hall2Comm_Pin|Hall3Comm_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pins : Q3L_Pin Q2L_Pin Q1L_Pin */
   GPIO_InitStruct.Pin = Q3L_Pin|Q2L_Pin|Q1L_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -424,16 +483,16 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 uint32_t val_capteurs[3];
-uint32_t alpha = 50;
+uint32_t alpha = 75;
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	TIM2->CCR1 = alpha;
 	TIM2->CCR2 = alpha;
 	TIM2->CCR3 = alpha;
-	uint8_t sens = 1; //0 : Sens horaire, 1: Sens anti-horaire
-	uint8_t code = (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) << 2) | (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) << 1) | HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15);
+	uint8_t code = (HAL_GPIO_ReadPin(Hall3_GPIO_Port, Hall3_Pin) << 2) | (HAL_GPIO_ReadPin(Hall2_GPIO_Port, Hall2_Pin) << 1) | HAL_GPIO_ReadPin(Hall1_GPIO_Port, Hall1_Pin);
+	uint8_t sens = 0; //0: sens horaire, 1: anti horaire
 
-	if (sens == 0){
+	if (sens == 1){
 		switch (code){
 			case 0b101:
 				//Activation du timer 2 CH1 et désactivation des autres channels
@@ -444,6 +503,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 1);
+				//LEDS de test
+				HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+				HAL_GPIO_TogglePin(LD5_GPIO_Port, LD5_Pin);
+				break;
 			case 0b001:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -452,6 +515,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
+				//LEDS de test
+				HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+				HAL_GPIO_TogglePin(LD7_GPIO_Port, LD7_Pin);
+				break;
 			case 0b011:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -460,6 +527,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
+				//LEDS de test
+				HAL_GPIO_TogglePin(LD5_GPIO_Port, LD5_Pin);
+				HAL_GPIO_TogglePin(LD9_GPIO_Port, LD9_Pin);
+				break;
 			case 0b010:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -468,6 +539,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+				//LEDS de test
+				HAL_GPIO_TogglePin(LD7_GPIO_Port, LD7_Pin);
+				HAL_GPIO_TogglePin(LD10_GPIO_Port, LD10_Pin);
+				break;
 			case 0b110:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
@@ -476,6 +551,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1); //Q1L
+				//LEDS de test
+				HAL_GPIO_TogglePin(LD9_GPIO_Port, LD9_Pin);
+				HAL_GPIO_TogglePin(LD8_GPIO_Port, LD8_Pin);
+				break;
 			case 0b100:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
@@ -484,6 +563,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 1);
+				//LEDS de test
+				HAL_GPIO_TogglePin(LD10_GPIO_Port, LD10_Pin);
+				HAL_GPIO_TogglePin(LD6_GPIO_Port, LD6_Pin);
+				break;
 			default:
 				// On désactive tout
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -492,6 +575,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+				HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+				HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+				HAL_GPIO_TogglePin(LD5_GPIO_Port, LD5_Pin);
+				HAL_GPIO_TogglePin(LD6_GPIO_Port, LD6_Pin);
+				HAL_GPIO_TogglePin(LD7_GPIO_Port, LD7_Pin);
+				HAL_GPIO_TogglePin(LD8_GPIO_Port, LD8_Pin);
+				HAL_GPIO_TogglePin(LD9_GPIO_Port, LD9_Pin);
+				HAL_GPIO_TogglePin(LD10_GPIO_Port, LD10_Pin);
+				break;
 		}
 	}else{
 		switch (code){
@@ -504,6 +596,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+				//Gestion Leds
+				HAL_GPIO_TogglePin(LD10_GPIO_Port, LD10_Pin);
+				HAL_GPIO_TogglePin(LD7_GPIO_Port, LD7_Pin);
+				break;
 			case 0b001:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
@@ -512,6 +608,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 1);
+				//Gestion Leds
+				HAL_GPIO_TogglePin(LD8_GPIO_Port, LD8_Pin);
+				HAL_GPIO_TogglePin(LD9_GPIO_Port, LD9_Pin);
+				break;
 			case 0b011:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
@@ -520,6 +620,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 1);
+				//Gestion Leds
+				HAL_GPIO_TogglePin(LD6_GPIO_Port, LD6_Pin);
+				HAL_GPIO_TogglePin(LD10_GPIO_Port, LD10_Pin);
+				break;
 			case 0b010:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -528,6 +632,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 1);
+				//Gestion Leds
+				HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+				HAL_GPIO_TogglePin(LD8_GPIO_Port, LD8_Pin);
+				break;
 			case 0b110:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_2);
@@ -536,6 +644,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1); //Q3L
+				//Gestion Leds
+				HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+				HAL_GPIO_TogglePin(LD6_GPIO_Port, LD6_Pin);
+				break;
 			case 0b100:
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -544,6 +656,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 1);
+				//Gestion Leds
+				HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+				HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+				break;
 			default:
 				// On désactive tout
 				HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_3);
@@ -552,6 +668,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, 0);
 				HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, 0);
+				break;
 		}
 	}
 }
