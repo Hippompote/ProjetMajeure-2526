@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>641</width>
+    <height>482</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QLabel {
+    color: white;             /* ou un code hexa : #FFFFFF */
+    background-color: transparent;
+}
+
+/* --- FOND GENERAL --- */
+QMainWindow, QWidget {
+    background-color: #2e3035; /* Gris sombre industriel */
+    color: #ffffff;            /* Texte blanc par défaut */
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+    font-size: 11pt;           /* Gros texte lisible (style tactile) */
+}
+
+/* --- LES TEXTES (LABELS) --- */
+QLabel {
+    color: #f0f0f0;
+    font-weight: bold;
+    background: transparent;
+}
+
+/* Spécifique pour ton titre ou l'heure (si tu lui donnes un nom spécifique) */
+QLabel#label_titre {
+    color: #a87eeb; /* Un violet type &quot;TGV Inoui&quot; pour le titre */
+    font-size: 11pt;
+}
+
+/* --- BOUTONS COMPACTS --- */
+QPushButton {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #6c717d, stop:1 #52565e);
+    border: 1px solid #3e4147; /* Bordure plus fine (1px au lieu de 2px) */
+    border-radius: 6px;        /* Arrondi plus petit (6px au lieu de 10px) */
+    
+    color: white;
+    font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+    
+    /* C'EST ICI QUE TU REGLES LA TAILLE : */
+    font-size: 10pt;           /* Texte plus petit (avant: 14pt) */
+    padding: 5px 15px;         /* Moins d'espace autour du texte (avant: 10px 20px) */
+    
+    /* Optionnel : Forcer une hauteur fixe si tu veux qu'ils soient tous pareils */
+    min-height: 25px;
+}
+
+QPushButton:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #7d8290, stop:1 #60646e);
+    border-color: #a87eeb;
+}
+
+QPushButton:pressed {
+    background-color: #3e4147;
+    padding-top: 6px;  /* Ajusté pour le nouveau padding */
+    padding-bottom: 4px;
+}
+
+/* Effet au survol de la souris */
+QPushButton:hover {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #7d8290, stop:1 #60646e);
+    border-color: #a87eeb;     /* Bordure violette au survol */
+}
+
+/* Effet quand on clique */
+QPushButton:pressed {
+    background-color: #3e4147; /* Plus sombre pour simuler l'enfoncement */
+    padding-top: 12px;         /* Décalage du texte pour l'effet physique */
+    padding-bottom: 8px;
+}
+
+/* --- LE SLIDER --- */
+QSlider::groove:horizontal {
+    border: 1px solid #3e4147;
+    height: 10px;
+    background: #1e1f22;
+    margin: 2px 0;
+    border-radius: 5px;
+}
+
+QSlider::handle:horizontal {
+    background: #ffbe00;       /* Le Jaune SNCF iconique pour le curseur */
+    border: 1px solid #1e1f22;
+    width: 24px;
+    height: 24px;
+    margin: -8px 0;
+    border-radius: 12px;       /* Curseur rond */
+}
+
+/* Style spécifique pour le GRAND TITRE */
+QLabel#label_titre {
+    color: #a87eeb;      /* Violet SNCF */
+    font-size: 12pt;     /* Très gros */
+    font-weight: bold;
+    text-transform: uppercase; /* Force les majuscules */
+    border-bottom: 2px solid #a87eeb; /* Une ligne soulignée stylée */
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>110</y>
+      <width>341</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TGV InOUI 9943 Lyon Part Dieu -&gt; Toulouse Matabiau</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>150</y>
+      <width>371</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>FRECCIAROSSA 9943 Lyon Part Dieu -&gt; Paris Gare de Lyon</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>190</y>
+      <width>321</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TER AuRA 892726 Lyon Part Dieu -&gt; Grenoble</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_5">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>230</y>
+      <width>321</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TER AuRA 3486 Lyon Part Dieu -&gt; Valence Ville</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_6">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>280</y>
+      <width>351</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TER AuRA 12567 Lyon Part Dieu -&gt; Clermont Ferrand</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_7">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>320</y>
+      <width>321</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>INTERCITES 5560 Lyon Part-Dieu -&gt; Nantes</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_8">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>360</y>
+      <width>321</width>
+      <height>37</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ICE 992 Lyon Part-Dieu - Francfort Hbf</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_9">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>100</y>
+      <width>131</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_10">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>230</y>
+      <width>131</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>10</y>
+      <width>91</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>CPE.png</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_titre">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>0</y>
+      <width>411</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+      <pointsize>12</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Projet de Majeure ESE - Robot &quot;Assist'en Gare&quot;</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>641</width>
+     <height>33</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
