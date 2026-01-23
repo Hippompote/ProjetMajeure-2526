@@ -26,7 +26,11 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef struct {
+	uint8_t cmd;
+	uint8_t val;
+	uint32_t delay_ms;
+} SequenceStep;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -47,17 +51,96 @@ SPI_HandleTypeDef hspi1;
 TIM_HandleTypeDef htim2;
 
 UART_HandleTypeDef huart1;
+UART_HandleTypeDef huart2;
 
 PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
 #define SFD_PATTERN 0xD
+
 #define STARTSTOP 0x1
+#define STARTSTOP_M2 0x09
+
 #define DIR 0x2
+#define DIR_M2 0x0A
+
+#define SET_SPEED_M2 0x0F
 #define SET_SPEED 0x7
+
+#define CMD_URGENCE 9
+
+volatile uint8_t Lidar_Status = 'F';
+uint8_t rx_byte_lidar;
+
+SequenceStep Seq_VoieA[] = {
+		{DIR , 1, 100},
+		{DIR_M2, 0, 100},
+		{STARTSTOP, 1, 50},
+		{STARTSTOP_M2, 1, 50},
+		{SET_SPEED, 10, 0},
+		{SET_SPEED_M2, 10, 2000},
+		{SET_SPEED, 15, 0},
+		{SET_SPEED_M2, 15, 1000},
+		{STARTSTOP, 0, 100},
+		{STARTSTOP_M2, 0, 100}
+};
+
+SequenceStep Seq_VoieB[] = {
+		{DIR , 1, 100},
+		{DIR_M2 , 0, 100},
+		{STARTSTOP, 1, 50},
+		{STARTSTOP_M2, 1, 50},
+		{SET_SPEED, 15, 0},
+		{SET_SPEED_M2, 15, 2000},
+		{STARTSTOP, 0, 100},
+		{STARTSTOP_M2, 0, 100},
+		{DIR , 0, 100},
+		{STARTSTOP, 1, 50},
+		{STARTSTOP_M2, 1, 50},
+		{SET_SPEED, 10, 0},
+		{SET_SPEED_M2, 10, 1000},
+		{STARTSTOP, 0, 100},
+		{STARTSTOP_M2, 0, 100}
+};
+
+SequenceStep Seq_VoieC[] = {
+		{DIR , 0, 100},
+		{DIR_M2 , 1, 100},
+		{STARTSTOP, 1, 50},
+		{STARTSTOP_M2, 1, 50},
+		{SET_SPEED, 10, 0},
+		{SET_SPEED_M2, 10, 1000},
+		{SET_SPEED, 15, 0},
+		{SET_SPEED_M2, 15, 1000},
+		{STARTSTOP, 0, 100},
+		{STARTSTOP_M2, 0, 100}
+};
+
+SequenceStep Seq_VoieD[] = {
+		{DIR , 1, 100},
+		{DIR_M2 , 0, 100},
+		{STARTSTOP, 1, 50},
+		{STARTSTOP_M2, 1, 50},
+		{SET_SPEED, 15, 0},
+		{SET_SPEED_M2, 15, 2000},
+		{SET_SPEED, 10, 0},
+		{SET_SPEED_M2, 10, 2000},
+		{DIR, 0, 100},
+		{SET_SPEED, 10, 0},
+		{SET_SPEED_M2, 10, 1000},
+		{STARTSTOP, 0, 100},
+		{STARTSTOP_M2, 0, 100}
+};
+
+#define SEQA_LEN (sizeof(Seq_VoieA) / sizeof(SequenceStep))
+#define SEQB_LEN (sizeof(Seq_VoieB) / sizeof(SequenceStep))
+#define SEQC_LEN (sizeof(Seq_VoieC) / sizeof(SequenceStep))
+#define SEQD_LEN (sizeof(Seq_VoieD) / sizeof(SequenceStep))
 
 uint16_t txFrame;
 uint16_t rxFrame;
+
+uint8_t Seq;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -68,16 +151,75 @@ static void MX_SPI1_Init(void);
 static void MX_USB_PCD_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+int Safe_Delay(uint32_t delay_ms, uint8_t current_cmd, uint8_t current_val);
+void Force_Stop_Motor(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t rx_byte;
-uint8_t stored_cmd = 0;
+
 
 volatile uint8_t packet_received = 0;
+
+int Safe_Delay(uint32_t delay_ms, uint8_t current_cmd, uint8_t current_val){
+	uint32_t elapsed = 0;
+
+	while (elapsed < delay_ms){
+
+		if(packet_received == 1) return 1;
+
+		if (Lidar_Status == 'S'){
+			Force_Stop_Motor();
+
+			while(Lidar_Status == 'S'){
+				if(packet_received == 1) return 1;
+				HAL_Delay(100);
+			}
+
+			Send_Cmd(current_cmd, current_val);
+		}
+
+		if (Lidar_Status == 'L'){
+			Send_Cmd(SET_SPEED, 15);
+			HAL_Delay(5);
+			Send_Cmd(SET_SPEED_M2, 15);
+
+			while(Lidar_Status == 'L'){
+				if(packet_received == 1) return 1;
+				HAL_Delay(100);
+			}
+
+			Send_Cmd(current_cmd, current_val);
+		}
+
+		HAL_Delay(10);
+		elapsed += 10;
+	}
+	return 0;
+}
+
+void Play_Sequence(SequenceStep* seq, uint8_t length) {
+	for (int i = 0; i < length; i++){
+		if (packet_received == 1){
+			Force_Stop_Motor();
+			break;
+		}
+		Send_Cmd(seq[i].cmd, seq[i].val);
+
+		if(seq[i].delay_ms > 0){
+			if(Safe_Delay(seq[i].delay_ms, seq[i].cmd, seq[i].val)==1){
+				Force_Stop_Motor();
+				break;
+			}
+
+		}
+	}
+}
+
+uint8_t rx_byte;
+uint8_t stored_cmd = 0;
 uint8_t final_cmd = 0;
 uint8_t final_val = 0;
 
@@ -101,10 +243,18 @@ void Send_Cmd(uint8_t cmd, uint8_t value) {
 	txFrame = frame;
 	HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+	for(volatile int i=0; i<500; i++);
 	HAL_SPI_TransmitReceive(&hspi1, (uint8_t*)&txFrame, (uint8_t*)&rxFrame, 1, 100);
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 	HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 	HAL_Delay(10);
+}
+
+void Force_Stop_Motor(void){
+	Send_Cmd(STARTSTOP, 0);
+	HAL_Delay(5);
+	Send_Cmd(STARTSTOP_M2, 0);
+	HAL_Delay(5);
 }
 /* USER CODE END 0 */
 
@@ -142,8 +292,10 @@ int main(void)
   MX_USB_PCD_Init();
   MX_TIM2_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
+  HAL_UART_Receive_IT(&huart2, &rx_byte_lidar, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -152,13 +304,45 @@ int main(void)
   {
 	  if(packet_received)
 	  {
-		  Send_Cmd(final_cmd, final_val);
+		  //Moteur stop
+		  packet_received = 0;
+		  uint8_t current_Seq = Seq;
+		  if (current_Seq == CMD_URGENCE){
+			  Force_Stop_Motor();
+		  }
+		  else{
+			  switch(current_Seq)
+			  {
+					case 1: //VOIE A
+					  Play_Sequence(Seq_VoieA, SEQA_LEN);
+					  break;
+
+					case 2: //VOIE B
+					  Play_Sequence(Seq_VoieB, SEQB_LEN);
+					  break;
+
+					case 3: //VOIE C
+					  Play_Sequence(Seq_VoieC, SEQC_LEN);
+					  break;
+
+					case 4: //VOIE D
+						Play_Sequence(Seq_VoieD, SEQD_LEN);
+						break;
+
+					case 5: //VOIE A
+						Play_Sequence(Seq_VoieA, SEQA_LEN);
+						break;
+
+					default:
+					  Force_Stop_Motor();
+					  break;
+			  }
+		  }
 
 		  uint8_t ack_code = 0x06;
 
 		  HAL_UART_Transmit(&huart1, &ack_code, 1, 10);
 
-		  packet_received = 0;
 	  }
     /* USER CODE END WHILE */
 
@@ -208,8 +392,9 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB|RCC_PERIPHCLK_USART1
-                              |RCC_PERIPHCLK_I2C1;
+                              |RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
+  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
   PeriphClkInit.USBClockSelection = RCC_USBCLKSOURCE_PLL;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
@@ -287,7 +472,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.Direction = SPI_DIRECTION_2LINES;
   hspi1.Init.DataSize = SPI_DATASIZE_16BIT;
   hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
-  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.CLKPhase = SPI_PHASE_2EDGE;
   hspi1.Init.NSS = SPI_NSS_SOFT;
   hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
   hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
@@ -295,7 +480,7 @@ static void MX_SPI1_Init(void)
   hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
   hspi1.Init.CRCPolynomial = 7;
   hspi1.Init.CRCLength = SPI_CRC_LENGTH_DATASIZE;
-  hspi1.Init.NSSPMode = SPI_NSS_PULSE_ENABLE;
+  hspi1.Init.NSSPMode = SPI_NSS_PULSE_DISABLE;
   if (HAL_SPI_Init(&hspi1) != HAL_OK)
   {
     Error_Handler();
@@ -401,6 +586,41 @@ static void MX_USART1_UART_Init(void)
 }
 
 /**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
   * @brief USB Initialization Function
   * @param None
   * @retval None
@@ -500,18 +720,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if (huart -> Instance == USART1)
 	{
-		if ((rx_byte & 0x80) != 0)
-		{
-			stored_cmd = rx_byte & 0x0F;
-		}
-		else
-		{
-			final_cmd = stored_cmd;
-			final_val = rx_byte;
-			packet_received = 1;
-		}
+		Seq = rx_byte;
+		packet_received = 1;
 
 		HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
+	}
+	if (huart->Instance == USART2){
+		if(rx_byte_lidar == 'S' || rx_byte_lidar == 'L' || rx_byte_lidar == 'F'){
+			Lidar_Status = rx_byte_lidar;
+
+		HAL_GPIO_TogglePin(LD4_GPIO_Port, LD4_Pin);
+		}
+
+		HAL_UART_Receive_IT(&huart2, &rx_byte_lidar, 1);
 	}
 }
 
