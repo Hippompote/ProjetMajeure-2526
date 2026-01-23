@@ -28,4 +28,6 @@ Prototype de robot d'assistance en gare pour les PMR et personnes âgées pour l
 
 Le répertoire est constitué de différentes branches sous la forme "Auteurs + Thème". Chaque branche correspond à ce qui a été fait sur une partie du projet (conception PCB, STM32...). Les fichiers readme sont également adaptés pour chaque branche.
 
-# Lien GitHub du répertoire
+# Lien GitHub du répertoire/Dossier technique
+
+https://github.com/Hippompote/ProjetMajeure-2526/tree/main
